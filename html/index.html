@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="#2196f3">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-starturl" content="./">
+    <meta name="description"
+          content="Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices">
+
+    <title>Web Bluetooth Terminal</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#2196f3">
+    <link rel="shortcut icon" href="icons/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="app">
+        <div class="toolbar">
+            <div id="device-name" class="name">BLE remote</div>
+            <div class="buttons">
+                <button id="configuration" type="button" aria-label="Configuration">
+                    <i class="material-icons">settings</i>
+                </button>
+
+                <button id="keyboard" type="button" aria-label="keyboard">
+                    <i class="material-icons">keyboard</i>
+                </button>
+
+                <button id="gamepad" type="button" aria-label="gamepad">
+                    <i class="material-icons">gamepad</i>
+                </button>
+            
+                <button id="connect" type="button" aria-label="Connect">
+                    <i class="material-icons">bluetooth</i>
+                </button>
+
+                <button id="disconnect" type="button" aria-label="Disconnect">
+                    <i class="material-icons">bluetooth_disabled</i>
+                </button>
+            </div>
+        </div>
+        <div id="joystick">
+        	<div id="joystick-direction">
+        		<div class="joystick-row">
+        			<div class="joystick-cell">
+        			</div>
+        			<div class="joystick-cell" id="button_UP">
+        			  <img src="button/button_UP.svg" class="button-image">
+        		    </div>
+        			<div class="joystick-cell">
+        			</div>
+        		</div>
+        		<div class="joystick-row">
+        			<div class="joystick-cell" id="button_LEFT">
+        			  <img src="button/button_LEFT.svg" class="button-image">
+        			</div>
+        			<div class="joystick-cell">
+        			</div>
+        			<div class="joystick-cell" id="button_RIGHT">
+        			  <img src="button/button_RIGHT.svg" class="button-image">
+        			</div>
+        		</div>
+        		<div class="joystick-row">
+        			<div class="joystick-cell">
+        			</div>
+        			<div class="joystick-cell" id="button_DOWN">
+        			  <img src="button/button_DOWN.svg" class="button-image">
+        			</div>
+        			<div class="joystick-cell">
+        			</div>
+        		</div>
+        	</div>
+        	<div id="joystick-rxtx">
+        		<div class="joystick-row">RX: ____________________
+        		</div>
+        		<div class="joystick-row">TX: ____________________
+        		</div>
+        		<div class="joystick-row">MENU      START
+        		</div>
+        	</div>
+        	<div id="joystick-button">
+        		<div class="joystick-row">
+        			<div class="joystick-cell">
+        			</div>
+        			<div class="joystick-cell">
+        			  <img src="button/Xbox_button_Y.svg" class="button-image">
+        			</div>
+        			<div class="joystick-cell">
+        			</div>
+        		</div>
+        		<div class="joystick-row">
+        			<div class="joystick-cell">
+        			  <img src="button/Xbox_button_X.svg" class="button-image">
+        			</div>
+        			<div class="joystick-cell">
+        			</div>
+        			<div class="joystick-cell">
+        			  <img src="button/Xbox_button_B.svg" class="button-image">
+        			</div>
+        		</div>
+        		<div class="joystick-row">
+        			<div class="joystick-cell">
+        			</div>
+        			<div class="joystick-cell">
+        			  <img src="button/Xbox_button_A.svg" class="button-image">
+        			</div>
+        			<div class="joystick-cell">
+        			</div>
+        		</div>
+        	</div>
+        </div>
+        <div id="terminal" class="terminal"></div>
+        <form id="send-form" class="send-form">
+            <input id="input" type="text" aria-label="Input" autocomplete="off" placeholder="Type something to send...">
+            <button type="submit" aria-label="Send">
+                <i class="material-icons">send</i>
+            </button>
+        </form>
+    </div>
+    <script src="js/BluetoothTerminal.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/companion.js" data-service-worker="sw.js"></script>
+</body>
+</html>
