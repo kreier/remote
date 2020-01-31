@@ -1,38 +1,38 @@
-// Get references to UI elements
+// Получение ссылок на элементы UI
 let connectButton = document.getElementById('connect');
 let disconnectButton = document.getElementById('disconnect');
 let terminalContainer = document.getElementById('terminal');
 let sendForm = document.getElementById('send-form');
 let inputField = document.getElementById('input');
 
-// Connect to the device on Connect button click
+// Подключение к устройству при нажатии на кнопку Connect
 connectButton.addEventListener('click', function() {
   connect();
 });
 
-// Disconnect from the device on Disconnect button click
+// Отключение от устройства при нажатии на кнопку Disconnect
 disconnectButton.addEventListener('click', function() {
   disconnect();
 });
 
-// Handle form submit event
+// Обработка события отправки формы
 sendForm.addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent form sending
-  send(inputField.value); // Send text field contents
-  inputField.value = '';  // Zero text field
-  inputField.focus();     // Focus on text field
+  event.preventDefault(); // Предотвратить отправку формы
+  send(inputField.value); // Отправить содержимое текстового поля
+  inputField.value = '';  // Обнулить текстовое поле
+  inputField.focus();     // Вернуть фокус на текстовое поле
 });
 
-// Selected device object cache
+// Кэш объекта выбранного устройства
 let deviceCache = null;
 
-// Characteristic object cache
+// Кэш объекта характеристики
 let characteristicCache = null;
 
 // Промежуточный буфер для входящих данных
 let readBuffer = '';
 
-// Launch Bluetooth device chooser and connect to the selected
+// Запустить выбор Bluetooth устройства и подключиться к выбранному
 function connect() {
   return (deviceCache ? Promise.resolve(deviceCache) :
       requestBluetoothDevice()).
@@ -70,7 +70,7 @@ function handleDisconnection(event) {
       catch(error => log(error));
 }
 
-// Connect to the device specified, get service and characteristic
+// Подключение к определенному устройству, получение сервиса и характеристики
 function connectDeviceAndCacheCharacteristic(device) {
   if (device.gatt.connected && characteristicCache) {
     return Promise.resolve(characteristicCache);
@@ -97,7 +97,7 @@ function connectDeviceAndCacheCharacteristic(device) {
       });
 }
 
-// Enable the characteristic changes notification
+// Включение получения уведомлений об изменении характеристики
 function startNotifications(characteristic) {
   log('Starting notifications...');
 
@@ -109,10 +109,23 @@ function startNotifications(characteristic) {
       });
 }
 
-// Data receiving - simple version
+// Получение данных
 function handleCharacteristicValueChanged(event) {
   let value = new TextDecoder().decode(event.target.value);
-  log(value, 'in');
+
+  for (let c of value) {
+    if (c === '\n') {
+      let data = readBuffer.trim();
+      readBuffer = '';
+
+      if (data) {
+        receive(data);
+      }
+    }
+    else {
+      readBuffer += c;
+    }
+  }
 }
 
 // Обработка полученных данных
@@ -120,13 +133,13 @@ function receive(data) {
   log(data, 'in');
 }
 
-// Output to terminal
+// Вывод в терминал
 function log(data, type = '') {
   terminalContainer.insertAdjacentHTML('beforeend',
       '<div' + (type ? ' class="' + type + '"' : '') + '>' + data + '</div>');
 }
 
-// Disconnect from the connected device
+// Отключиться от подключенного устройства
 function disconnect() {
   if (deviceCache) {
     log('Disconnecting from "' + deviceCache.name + '" bluetooth device...');
@@ -152,7 +165,7 @@ function disconnect() {
   deviceCache = null;
 }
 
-// Send data to the connected device
+// Отправить данные подключенному устройству
 function send(data) {
   data = String(data);
 
@@ -160,7 +173,7 @@ function send(data) {
     return;
   }
 
-  //data += '\n'; // removed since not needed in simple protocol
+  data += '\n';
 
   if (data.length > 20) {
     let chunks = data.match(/(.|[\r\n]){1,20}/g);
