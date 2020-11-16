@@ -13,6 +13,8 @@ The idea is to program a controller for students that don't have a smartphone (c
 
 ## Source code used
 
+As of November 2020 I only managed to create the simple interface and extend loginov's progessive webapp to the digital controller. Further work would be implemented in the webpage, served by the robot itself.
+
 ### Progressive WebApp
 
 This interface is a copy of Danila Loginov and his [Github repository](https://github.com/loginov-rocks/Web-Bluetooth-Terminal).
